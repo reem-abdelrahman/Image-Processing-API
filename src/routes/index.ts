@@ -1,14 +1,13 @@
-import express from 'express';
+import express, { Router, Request, Response } from 'express';
 import retreiveImage from './api/retreiveImage';
-//import imageProcess from './api/imageProcess';
-const routes = express.Router();
 
-routes.get('/', (req, res) => {
-  res.send('hello main api');
-  res.status(200);
+const routes: Router = express.Router();
+
+routes.get('/', (req: Request, res: Response) => {
+  res.send('hello route api');
 });
 
 routes.use('/resizedImage', retreiveImage);
-
+routes.use('/', express.static('./images'));
 
 export default routes;

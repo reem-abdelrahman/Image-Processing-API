@@ -39,11 +39,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var imageProcess_1 = __importDefault(require("../utilities/imageProcess"));
 var supertest_1 = __importDefault(require("supertest"));
 var index_1 = __importDefault(require("../index"));
 var request = (0, supertest_1.default)(index_1.default);
-describe('test the endpoints', function () {
-    it('', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('test the endpoints /api', function () {
+    it('test /api', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -55,15 +56,11 @@ describe('test the endpoints', function () {
             }
         });
     }); });
-});
-describe('test endpoint', function () {
-    it('', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var name, response;
+    it('test api/image.jpg', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    name = 'fjord';
-                    return [4 /*yield*/, request.get('/api/resizedImage/?image=fjord&height=200&width=150')];
+                case 0: return [4 /*yield*/, request.get('/api/fjord.jpg')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
@@ -72,11 +69,33 @@ describe('test endpoint', function () {
         });
     }); });
 });
-/*
-describe("Image Processing tests", ()=>{
-    it('expects an error with the wrong input file', async ()=> {
-        const name = 'idontexist'
-        const resize = await imageProcess(name, 200, 300);
-        expect(resize).toThrow(Error);
-    });
-}) */ 
+describe('test endpoint resizedImage', function () {
+    it('test /api/resizedImage', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/resizedImage/?image=fjord&height=200&width=150')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe("Image Processing tests", function () {
+    it('expects the return value to be true', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var name, resize;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    name = 'fjord';
+                    return [4 /*yield*/, (0, imageProcess_1.default)(name, 200, 200)];
+                case 1:
+                    resize = _a.sent();
+                    expect(resize).toBe(true);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

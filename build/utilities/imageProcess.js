@@ -43,18 +43,27 @@ var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
 var retreiveImage_1 = require("../routes/api/retreiveImage");
 var imageProcess = function (imageName, width, height) { return __awaiter(void 0, void 0, void 0, function () {
-    var imagePath, resizedImage;
+    var imagePath, resizedImage, error_1;
     return __generator(this, function (_a) {
-        imagePath = path_1.default.join("".concat(retreiveImage_1.absoluteImagePath, "/").concat(imageName, ".jpg"));
-        resizedImage = path_1.default.join("".concat(retreiveImage_1.absoluteResizedImagePath), "".concat(imageName, "W").concat(width, "H").concat(height, ".jpg"));
-        try {
-            (0, sharp_1.default)(imagePath).resize(width, height).toFile(resizedImage);
-            return [2 /*return*/, true];
+        switch (_a.label) {
+            case 0:
+                imagePath = path_1.default.join("".concat(retreiveImage_1.absoluteImagePath), "".concat(imageName, ".jpg"));
+                resizedImage = path_1.default.join("".concat(retreiveImage_1.absoluteResizedImagePath), "".concat(imageName, "W").concat(width, "H").concat(height, ".jpg"));
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, (0, sharp_1.default)(imagePath)
+                        .resize(width, height)
+                        .toFile(resizedImage)];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, true];
+            case 3:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        catch (error) {
-            throw new Error("".concat(error, " Check imageProcess"));
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.default = imageProcess;

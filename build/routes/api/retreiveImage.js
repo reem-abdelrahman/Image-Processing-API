@@ -43,46 +43,43 @@ exports.absoluteImagePath = exports.absoluteResizedImagePath = void 0;
 var express_1 = __importDefault(require("express"));
 var path_1 = __importDefault(require("path"));
 var imageProcess_1 = __importDefault(require("../../utilities/imageProcess"));
-var retreiveImage = express_1.default.Router();
-var absoluteResizedImagePath = path_1.default.resolve('./') + '/src/images/resized';
+var retreiveImage = (0, express_1.default)();
+var absoluteResizedImagePath = path_1.default.resolve('./') + '/images/resized';
 exports.absoluteResizedImagePath = absoluteResizedImagePath;
-var absoluteImagePath = path_1.default.resolve('./') + '/src/images';
+var absoluteImagePath = path_1.default.resolve('./') + '/images';
 exports.absoluteImagePath = absoluteImagePath;
-retreiveImage.use('/', express_1.default.static('src/images'));
 retreiveImage.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var imageName, heightString, heightN, widthString, widthN, resizedImage;
+    var imageName, heightString, heightN, widthString, widthN, resizedImage, error_1;
     return __generator(this, function (_a) {
-        try {
-            imageName = req.query.image;
-            heightString = req.query.height;
-            heightN = parseInt(heightString);
-            widthString = req.query.width;
-            widthN = parseInt(widthString);
-            if (!imageName) {
-                return [2 /*return*/, res.status(400).send('Please type the image name')];
-            }
-            if (!widthN) {
-                return [2 /*return*/, res.status(400).send('Please type the width')];
-            }
-            if (!heightN) {
-                return [2 /*return*/, res.status(400).send('Please type the height')];
-            }
-            (0, imageProcess_1.default)(imageName, widthN, heightN);
-            resizedImage = path_1.default.resolve("".concat(absoluteResizedImagePath, "/").concat(imageName, "W").concat(widthN, "H").concat(heightN, ".jpg"));
-            //console.log(`absoluteImagePath,${isAbsolute(absoluteImagePath)} '' ${absoluteImagePath}, absolute resized image path: ' '  ${absoluteResizedImagePath}, ${isAbsolute(absoluteResizedImagePath)} `)
-            try {
-                res.sendFile(resizedImage);
-                res.status(200);
-            }
-            catch (error) {
-                console.log(error + 'sendFile code');
-            }
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                imageName = req.query.image;
+                heightString = req.query.height;
+                heightN = parseInt(heightString);
+                widthString = req.query.width;
+                widthN = parseInt(widthString);
+                // resizing the image by using a module 
+                return [4 /*yield*/, (0, imageProcess_1.default)(imageName, widthN, heightN)];
+            case 1:
+                // resizing the image by using a module 
+                _a.sent();
+                resizedImage = "".concat(absoluteResizedImagePath, "/").concat(imageName, "W").concat(widthN, "H").concat(heightN, ".jpg");
+                // view the image in the browser
+                try {
+                    res.sendFile(resizedImage);
+                }
+                catch (error) {
+                    console.log(error + 'sendFile code');
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(400);
+                res.send(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
-        catch (error) {
-            res.status(400);
-            console.log(error);
-        }
-        return [2 /*return*/];
     });
 }); });
 exports.default = retreiveImage;
