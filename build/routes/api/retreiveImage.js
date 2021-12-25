@@ -39,74 +39,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.absoluteImagePath = exports.absoluteResizedImagePath = void 0;
 var express_1 = __importDefault(require("express"));
-var sharp_1 = __importDefault(require("sharp"));
+var path_1 = __importDefault(require("path"));
+var imageProcess_1 = __importDefault(require("../../utilities/imageProcess"));
 var retreiveImage = express_1.default.Router();
-var imagePath = 'src/images';
-var resizedImagePath = 'src/images/resized';
+var absoluteResizedImagePath = path_1.default.resolve('./') + '/src/images/resized';
+exports.absoluteResizedImagePath = absoluteResizedImagePath;
+var absoluteImagePath = path_1.default.resolve('./') + '/src/images';
+exports.absoluteImagePath = absoluteImagePath;
 retreiveImage.use('/', express_1.default.static('src/images'));
-retreiveImage.get('/', function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    function getOriginalImage() {
-        var originalImage = "".concat(imagePath, "/").concat(imageName, ".jpg");
-        return originalImage;
-    }
-    var imageName, heightString, heightN, widthString, widthN, originalImage;
+retreiveImage.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var imageName, heightString, heightN, widthString, widthN, resizedImage;
     return __generator(this, function (_a) {
-        imageName = req.query.image;
-        heightString = (req.query.height);
-        heightN = parseInt(heightString);
-        widthString = req.query.width;
-        widthN = parseInt(widthString);
-        originalImage = "".concat(imagePath, "/").concat(imageName, ".jpg");
-        ;
-        /// the problem is in this function
-        /* function getProcessedImage() {
-            getOriginalImage();
-            return `${resizedImagePath}/${imageName}W${widthN}H${heightN}.jpg`
-         } */
-        if (!imageName) {
-            return [2 /*return*/, res.status(400).send("Please type the image name")];
+        try {
+            imageName = req.query.image;
+            heightString = req.query.height;
+            heightN = parseInt(heightString);
+            widthString = req.query.width;
+            widthN = parseInt(widthString);
+            if (!imageName) {
+                return [2 /*return*/, res.status(400).send('Please type the image name')];
+            }
+            if (!widthN) {
+                return [2 /*return*/, res.status(400).send('Please type the width')];
+            }
+            if (!heightN) {
+                return [2 /*return*/, res.status(400).send('Please type the height')];
+            }
+            (0, imageProcess_1.default)(imageName, widthN, heightN);
+            resizedImage = path_1.default.resolve("".concat(absoluteResizedImagePath, "/").concat(imageName, "W").concat(widthN, "H").concat(heightN, ".jpg"));
+            //console.log(`absoluteImagePath,${isAbsolute(absoluteImagePath)} '' ${absoluteImagePath}, absolute resized image path: ' '  ${absoluteResizedImagePath}, ${isAbsolute(absoluteResizedImagePath)} `)
+            try {
+                res.sendFile(resizedImage);
+                res.status(200);
+            }
+            catch (error) {
+                console.log(error + 'sendFile code');
+            }
         }
-        if (!widthN) {
-            return [2 /*return*/, res.status(400).send("Please type the width")];
+        catch (error) {
+            res.status(400);
+            console.log(error);
         }
-        if (!heightN) {
-            return [2 /*return*/, res.status(400).send("Please type the height")];
-        }
-        // Resize the Image
-        (function resizeImage() {
-            return __awaiter(this, void 0, void 0, function () {
-                var error_1;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, (0, sharp_1.default)(originalImage)
-                                    .resize(Number(heightN), Number(widthN))
-                                    .toFile(resizedImagePath)
-                                /*  .then((data) => {
-                                  /*  fsPromises.writeFile('wooow.png','w');
-                                    res.send(data); */
-                                //  const   saveImageOnDisk = (base64Image, imageName) => 
-                                //const   buf = new Buffer(base64Image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-                                //     })
-                                // (data) => {
-                                // return (res.end(data));
-                                //    }
-                            ];
-                        case 1:
-                            _a.sent();
-                            return [3 /*break*/, 3];
-                        case 2:
-                            error_1 = _a.sent();
-                            console.log(error_1);
-                            return [3 /*break*/, 3];
-                        case 3: return [2 /*return*/];
-                    }
-                });
-            });
-        });
-        next();
         return [2 /*return*/];
     });
 }); });

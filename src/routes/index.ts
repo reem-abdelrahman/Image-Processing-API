@@ -1,22 +1,14 @@
-import express from 'express';   
+import express from 'express';
 import retreiveImage from './api/retreiveImage';
-import newImage from './api/newImage';
+//import imageProcess from './api/imageProcess';
 const routes = express.Router();
 
-routes.get('/', (req, res) => { 
-  res.send("hello main api");
-  
+routes.get('/', (req, res) => {
+  res.send('hello main api');
+  res.status(200);
 });
 
-routes.use('/oldImage', retreiveImage);
-routes.use('/newImage', newImage);
-//routes.use('/images', express.static());
-
-
-//async function getMetadata() {
-//    const metadata = await sharp("sammy.png").metadata();
-//    console.log(metadata);
-//  }
+routes.use('/resizedImage', retreiveImage);
 
 
 export default routes;
