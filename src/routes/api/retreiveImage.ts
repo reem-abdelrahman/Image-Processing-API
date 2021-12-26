@@ -29,7 +29,7 @@ retreiveImage.get(
       try {
         res.sendFile(resizedImage);
       } catch (error) {
-        console.log(error + 'sendFile code');
+        res.send(error);
       }
     } catch (error) {
       res.status(400);

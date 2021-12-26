@@ -4,26 +4,28 @@ import app from '../index';
 
 const request: supertest.SuperTest<supertest.Test> = supertest(app);
 
-describe('test the endpoints /api', () => {
-  it('test /api', async (): Promise<void> => {
+describe('test the endpoints ', () => {
+  it('test /api', async (done): Promise<void> => {
     const response: supertest.Response = await request.get('/api');
     expect(response.status).toBe(200);
+    done();
   });
-  it('test api/image.jpg', async (): Promise<void> => {
+  it('test api/image.jpg', async (done): Promise<void> => {
     const response: supertest.Response = await request.get('/api/fjord.jpg');
     expect(response.status).toBe(200);
+    done();
   });
-});
-describe('test endpoint resizedImage', (): void => {
-  it('test /api/resizedImage', async (): Promise<void> => {
+  it('test /api/resizedImage', async (done): Promise<void> => {
     const response: supertest.Response = await request.get(
       '/api/resizedImage/?image=fjord&height=200&width=150'
     );
     expect(response.status).toBe(200);
+    done();
   });
 });
 
-describe('Image Processing tests', () => {
+
+describe('Image Processing test', () => {
   it('expects the return value to be true', async () => {
     const name = 'fjord';
     const resize = await imageProcess(name, 200, 200);

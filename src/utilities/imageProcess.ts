@@ -4,6 +4,7 @@ import {
   absoluteImagePath,
   absoluteResizedImagePath,
 } from '../routes/api/retreiveImage';
+import { response } from 'express';
 
 const imageProcess = async (
   imageName: string,
@@ -23,6 +24,7 @@ const imageProcess = async (
     return true;
   } catch (error) {
     console.log(error);
+    response.send(error);
   }
 };
 
