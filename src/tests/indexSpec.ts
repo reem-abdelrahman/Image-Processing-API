@@ -24,7 +24,6 @@ describe('test the endpoints ', () => {
   });
 });
 
-
 describe('Image Processing test', () => {
   it('expects the return value to be true', async () => {
     const name = 'fjord';

@@ -21,3 +21,9 @@ To run prettier use: npm run prettier
 To run lint use: npm run lint
 To run jasmine tests use: npm run test
 To run the server use: npm run start
+
+
+Things to improve in the future:
+- Add more testing units
+- Improve validating input's code
+- Add more features
